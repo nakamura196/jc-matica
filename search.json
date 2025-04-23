@@ -1,0 +1,52 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "jc-matica",
+    "section": "",
+    "text": "WEKOで公開されているデータからAIPを作成するツール",
+    "crumbs": [
+      "jc-matica"
+    ]
+  },
+  {
+    "objectID": "index.html#developer-guide",
+    "href": "index.html#developer-guide",
+    "title": "jc-matica",
+    "section": "Developer Guide",
+    "text": "Developer Guide\nIf you are new to using nbdev here are some useful pointers to get you started.\n\nInstall jc_matica in Development mode\n# make sure jc_matica package is installed in development mode\n$ pip install -e .\n\n# make changes under nbs/ directory\n# ...\n\n# compile to have changes apply to jc_matica\n$ nbdev_prepare",
+    "crumbs": [
+      "jc-matica"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "jc-matica",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/nakamura196/jc-matica.git\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages.",
+    "crumbs": [
+      "jc-matica"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "jc-matica",
+    "section": "How to use",
+    "text": "How to use\nPrepare .env file:\n# Archivematicaの設定\nDASHBOARD_URL=http://localhost:62080\nDASHBOARD_USERNAME=test\nDASHBOARD_API_KEY=test\n\nSTORAGE_SERVICE_URL=http://localhost:62081\nSTORAGE_SERVICE_USERNAME=test\nSTORAGE_SERVICE_PASSWORD=test\n\nLOCATION_UUID=624454a4-1555-4a0f-ba6b-969452966cd4\nPROCESSING_CONFIG=mdx\n\n# オブジェクトストレージの設定\nAWS_ACCESS_KEY_ID=\nAWS_SECRET_ACCESS_KEY=\n\nOS_ENDPOINT=https://s3ds.mdx.jp\nOS_BUCKET_NAME=\nOS_AIP_PREFIX=aip_storage\nOS_TRANSFER_PREFIX=transfer_source/jc\nPip install:\npip install https://github.com/nakamura196/archivematica_tools.git\nCreate AIP with Archivematica:\nfrom jc_matica.core import ApiClient\nfrom archivematica_tools.api import ArchivematicaAPIClient\nfrom archivematica_tools.vis import VisClient\nfrom dotenv import load_dotenv\nimport os\n\nload_dotenv(override=True)\n\n# https://kanazawa-u.repo.nii.ac.jp/records/26572\nprefix = \"kanazawa-u\"\nid = \"26572\"\noutput_dir = f\"./data\"\ntransfer_type = \"standard\"\ntransfer_accession = \"\"\nlocation_uuid = os.getenv(\"LOCATION_UUID\")\nprocessing_config = os.getenv(\"PROCESSING_CONFIG\")\n\n## Upload Dataset to S3 compatible storage\nclient = ApiClient()\nclient.upload(prefix, id, output_dir)\n\n## Create AIP with Archivematica\npath = f\"jc/{prefix}_{id}\"\nname = f\"{prefix}_{id}\"\n\nsip_uuid = ArchivematicaAPIClient.main(transfer_type, transfer_accession, location_uuid, path, name, processing_config, env_path=env_path)\n\n## Visualize AIP\nres = VisClient.main(sip_uuid)\nres.get_original_files()\nres.visualize_file_format_counts()\nres.visualize_file_events_count()\nres.parse_file_sec()\nres.visualize_structMap()",
+    "crumbs": [
+      "jc-matica"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nApiClient\n\n ApiClient (env_path:str='.env')\n\n*API Client for Archivematica\nArgs: env_path: Path to the environment variables file*\n\nsource\n\n\nApiClient.upload\n\n ApiClient.upload (prefix, id, output_dir)\n\n*Upload an AIP to Archivematica\nArgs: prefix: The prefix of the repository id: The ID of the record\noutput_dir: The directory to save the AIP*",
+    "crumbs": [
+      "core"
+    ]
+  }
+]
