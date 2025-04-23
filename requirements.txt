@@ -4,7 +4,3 @@ lxml
 pandas
 boto3==1.35.99
 python-dotenv
-# minio
-mets_tools
-nbdev
-gradio
